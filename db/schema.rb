@@ -10,8 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_17_164318) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "films", force: :cascade do |t|
+    t.string "titre"
+    t.text "apercu"
+    t.string "url_affiche"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "note"
+  end
+
+  create_table "listes", force: :cascade do |t|
+    t.string "nom"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "signets", force: :cascade do |t|
+    t.text "commentaire"
+    t.bigint "film_id", null: false
+    t.bigint "liste_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["film_id"], name: "index_signets_on_film_id"
+    t.index ["liste_id"], name: "index_signets_on_liste_id"
+  end
+
+  add_foreign_key "signets", "films"
+  add_foreign_key "signets", "listes"
 end
